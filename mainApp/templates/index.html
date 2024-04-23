@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <!-- TITLE -->
+    <title>TheInboxx - Anonymous Email Inbox</title>
+    {% load static %}
+    
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/brand/favicon.ico' %}" />
+    
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Experience hassle-free online privacy with our temporary email service. Safeguard your personal inbox by generating disposable email addresses on demand. Prevent spam, protect your identity, and maintain control over your digital footprint. Try our secure and convenient solution for maintaining your online confidentiality.">
+    <meta name="author" content="Pankaj Kushwaha">
+    <meta name="keywords" content="temporary email, disposable email, online privacy, spam prevention, identity protection, digital anonymity, secure email service, temporary inbox, email privacy, one-time email, anonymous email, email forwarding, virtual mailbox">
+
+    <meta property="og:url" content="https://theinboxx.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="TheInboxx - Anonymous Email Inbox">
+    <meta property="og:description" content="Experience hassle-free online privacy with our temporary email service. Safeguard your personal inbox by generating disposable email addresses on demand. Prevent spam, protect your identity, and maintain control over your digital footprint. Try our secure and convenient solution for maintaining your online confidentiality.">
+    <meta property="og:image" content="https://theinboxx.com/static/assets/images/brand/logo-small.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="theinboxx.com">
+    <meta property="twitter:url" content="https://theinboxx.com">
+    <meta name="twitter:title" content="TheInboxx - Anonymous Email Inbox">
+    <meta name="twitter:description" content="Experience hassle-free online privacy with our temporary email service. Safeguard your personal inbox by generating disposable email addresses on demand. Prevent spam, protect your identity, and maintain control over your digital footprint. Try our secure and convenient solution for maintaining your online confidentiality.">
+    <meta name="twitter:image" content="https://theinboxx.com/static/assets/images/brand/logo-small.png">
+    
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!-- STYLE CSS -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/dark-style.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/transparent-style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/skin-modes.css' %}" rel="stylesheet" />
+
+    <!--- FONT-ICONS CSS -->
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" />
+
+    <!-- COLOR SKIN CSS -->
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
+
+</head>
+
+<body class="app sidebar-mini ltr dark-mode" onload="loadActiveInboxes()">
+
+    <!-- GLOBAL-LOADER -->
+    <div id="global-loader">
+        <img src="{% static 'assets/images/loader.svg' %}" class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="page-main">
+
+            <!-- app-Header -->
+            <div class="app-header header sticky">
+                <div class="container-fluid main-container">
+                    <div class="d-flex">
+                        <a class="logo-horizontal " href="/">
+                            <img src="{% static 'assets/images/brand/logo.png' %}" class="header-brand-img" alt="logo">
+                        </a>
+                        <!-- LOGO -->
+                        <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                            <!-- SEARCH -->
+                            <div class="d-flex order-lg-2">
+                                <div class="d-flex country">
+                                    <a class="nav-link icon theme-layout nav-link-bg layout-setting">
+                                        <span class="dark-layout"><i class="fe fe-moon"></i></span>
+                                        <span class="light-layout"><i class="fe fe-sun"></i></span>
+                                    </a>
+                                </div>
+                                <div class="dropdown d-flex">
+                                    <a class="nav-link icon full-screen-link nav-link-bg">
+                                        <i class="fe fe-minimize fullscreen-button"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /app-Header -->
+
+            <!--app-content open-->
+            <div class="main-content mt-0">
+                <div class="side-app">
+
+                    <!-- CONTAINER -->
+                    <div class="main-container container-fluid">
+
+                        <!-- PAGE-HEADER -->
+                        <div class="page-header">
+                            <h1 class="page-title">Mail-Inbox</h1>
+                            <div>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Active Inboxes: <span id="activeInboxCount"></span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!-- PAGE-HEADER END -->
+
+                        <!-- Row -->
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div id="scroll-stickybar" class="position-lg-relative w-100">
+                                    <div class="card">
+                                        <div class="list-group list-group-transparent mb-0 mail-inbox pb-3">
+                                            <div class="mt-4 mx-4 mb-4 text-center">
+                                                <a href="#" data-bs-target="#createInbox" data-bs-toggle="modal" class="btn btn-primary btn-lg d-grid">Create Inbox</a>
+                                            </div>
+                                            <div id="activeInboxes"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="card">
+                                    <div class="card-body p-6">
+                                        <div class="inbox-body">
+                                            <div class="mail-option">
+                                                <div class="btn-group">
+                                                    <a href="javascript:void(0)" class="btn mini" onclick="deleteInbox(currentEmail)"><i class="fa fa-trash-o me-2"></i> Delete this mailbox</a>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <a href="javascript:void(0)" class="btn mini" onclick="noticeAlert('Emails are updated every 5 seconds')">
+                                                        <i class=" fa fa-refresh"></i> Refresh Emails
+                                                    </a>
+                                                </div>
+                                                <ul class="unstyled inbox-pagination">
+                                                    <li>Total Emails: <span id="emailCount">0</span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-inbox table-hover mb-0">
+                                                    <tbody>
+                                                        <thead class="text-center">
+                                                            <td class="view-message dont-show fw-bold">From</td>
+                                                            <td class="view-message fw-bold">Subject</td>
+                                                            <td class="view-message fw-bold">Date</td>
+                                                        </thead>
+                                                    <tbody id="allMails"></tbody>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW-1 CLOSED -->
+                    </div>
+                    <!-- CONTAINER CLOSED -->
+
+                </div>
+            </div>
+            <!--app-content closed-->
+        </div>
+
+        <!-- Email Contents -->
+        <div class="modal fade" id="emailView">
+            <div class="modal-dialog modal-fullscreen" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Subject: <span id="emailSubject"> { THE SUBJECT } </span></h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-8">From: <span id="emailFrom">{ Name }</span>
+                                < <span id="senderEmail">{ email@email.com }</span> >
+                            </div>
+                            <div class="col-4">Date: <span id="emailDate"> { Date } </span> <span id="emailTime"> { Time } </span></div>
+                        </div>
+                        <hr>
+                        <div>
+                            <iframe style="background-color: #fff;width: 100%; height: 70vh;" id="emailBody"></iframe>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Back to inbox</button> <button class="btn btn-danger" onclick="deleteEmail()">Delete Email</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Inbox modal-->
+        <div class="modal fade" id="createInbox">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-content-demo">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Create New Inbox</h6>
+                        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form onsubmit="return createInbox();">
+                            <div class="mb-3">
+                                <label for="inboxUsername" class="col-form-label">Username</label>
+                                <input type="text" minlength="1" class="form-control" id="inboxUsername">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inboxDomain" class="col-form-label">Domain</label>
+                                <select class="form-control select2 form-select" id="inboxDomain">
+                                    <option value="inboxx.xyz" selected>inboxx.xyz</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn ripple btn-success" type="button" onclick="createInbox()">Create</button>
+                        <button class="btn ripple btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Country-selector modal-->
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-md-12 col-sm-12 text-center">
+                        Made on Earth <i class="fe fe-globe text-info"></i> by Humans.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- FOOTER CLOSED -->
+    </div>
+
+    <!-- JQUERY JS -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    
+    <!-- Growl Alerts -->
+    <script src="{% static 'assets/plugins/notify/js/jquery.growl.js' %}"></script>
+    <script>
+        function errorAlert(alertMessage) {
+            return $.growl.error({
+                message: alertMessage
+            });
+        };
+        function noticeAlert(alertMessage) {
+            return $.growl.notice({
+                message: alertMessage
+            });
+        };
+    </script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="{% static 'assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- INPUT MASK JS-->
+    <script src="{% static 'assets/plugins/input-mask/jquery.mask.min.js' %}"></script>
+
+    <!-- JQUERY STICKY JS -->
+    <script src="{% static 'assets/plugins/jquery-sticky/jquery-sticky.js' %}"></script>
+
+    <!-- Color Theme js -->
+    <script src="{% static 'assets/js/themeColors.js' %}"></script>
+
+    <!-- Sticky js -->
+    <script src="{% static 'assets/js/sticky.js' %}"></script>
+
+    <!-- CUSTOM JS -->
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <!-- MOMENT JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+
+    <script>
+    
+        var emails = {{emails | safe}};
+        var currentEmail = emails[0];
+    
+        function loadActiveInboxes(){
+            const activeInboxes = document.getElementById('activeInboxes');
+            activeInboxes.innerHTML = ''; // Clear previous content
+            
+            for (const sno in emails) {
+                const emailRow = `<a href="javascript:void(0)" class="list-group-item d-flex align-items-center mx-4" onclick="changeEmail('${emails[sno]}')" id="${emails[sno]}"><span class="icons"><i class="ri-mail-line"></i></span> ${emails[sno]} </a>`;
+                
+                activeInboxes.insertAdjacentHTML('afterbegin', emailRow);
+            }
+            document.getElementById('activeInboxCount').textContent = emails.length + " / 3";
+        }
+        
+        // Declare a global variable to store the fetched JSON data
+        let emailData = null;
+
+        // Function to handle the AJAX request
+        function fetchData() {
+            const xhr = new XMLHttpRequest();
+            
+            if(currentEmail == null) return;
+            
+            xhr.open('GET', '/get_emails?id=' + currentEmail, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) { // success
+                    let responseData = null;
+                    responseData = JSON.parse(xhr.responseText);
+                    emailData = responseData['emails'];
+                    const emailsContainer = document.getElementById('allMails');
+                    emailsContainer.innerHTML = ''; // Clear previous content
+
+                    document.getElementById('emailCount').textContent = Object.keys(emailData).length;
+
+                    for (const sno in emailData) {
+                        let dateCol = null;
+                        (emailData[sno]['date'] == moment().format('DD-MM-YYYY')) ? dateCol = emailData[sno]['time']: dateCol = emailData[sno]['date'];
+                        const emailRow = `<tr data-bs-target="#emailView" data-bs-toggle="modal" onclick="openEmail(${ sno })"><td class="view-message dont-show fw-semibold">${ emailData[sno]['sender'] }</td><td class="view-message">${ emailData[sno]['subject'] }</td><td class="view-message text-end fw-semibold">${dateCol}</td></tr>`;
+                        emailsContainer.insertAdjacentHTML('afterbegin', emailRow);
+                    };
+                } else { // request failed
+                    console.error('Request failed. Status:', xhr.status);
+                    errorAlert('Server Unreachable...');
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request error');
+            };
+            xhr.send();
+            
+            // Re-fetch after 5 seconds
+            setTimeout(fetchData, 5000)
+        }
+
+        // Call the fetchData function to fetch and store the JSON data
+        fetchData();
+
+        function openEmail(dataID) {
+            document.getElementById('emailSubject').textContent = emailData[dataID]['subject'];
+            document.getElementById('emailBody').srcdoc = emailData[dataID]['content'];
+            document.getElementById('emailFrom').textContent = emailData[dataID]['sender'];
+            document.getElementById('senderEmail').textContent = emailData[dataID]['sender_email'];
+            document.getElementById('emailDate').textContent = emailData[dataID]['date'];
+            document.getElementById('emailTime').textContent = emailData[dataID]['time'];
+            $('#emailView').modal('show');
+        }
+
+        function changeEmail(email) {
+            if (emails.includes(email)) {
+                const prevEmail = currentEmail;
+                currentEmail = email;
+                if (fetchData() == -1) {
+                    currentEmail = prevEmail;
+                    errorAlert('Error while switching inbox');
+                } else {
+                    navigator.clipboard.writeText(email);
+                    noticeAlert('Email copied to clipboard');
+                    try{
+                        document.getElementById(prevEmail).classList.remove('active');
+                        document.getElementById(currentEmail).classList.add('active');
+                    } catch {
+                        document.getElementById(currentEmail).classList.add('active');
+                    }
+                }
+            } else {
+                errorAlert("Unauthorized inbox requested");
+            }
+        }
+
+        function deleteInbox(emailId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/delete_inbox?emailId=' + emailId, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) { // success
+                    let responseData = null;
+                    responseData = JSON.parse(xhr.responseText);
+                    if(responseData['responseCode'] == 200){
+                        var updatedEmails = [];
+                        for (const sno in emails) if(emails[sno] != emailId) updatedEmails.push(emails[sno]);
+                        emails = updatedEmails;
+                        noticeAlert('Inbox deleted successfully');
+                        if(emails.length>0) {
+                            changeEmail(emails[0]);
+                        } else {
+                            currentEmail = null;
+                        }
+                        loadActiveInboxes();
+                        document.getElementById(currentEmail).classList.add('active');
+                    } else {
+                        errorAlert('Error while deleting inbox: ' + responseData['message']);
+                    }
+                } else { // request failed
+                    console.error('Request failed. Status:', xhr.status);
+                    errorAlert('Server Unreachable...');
+                    return -1;
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request error');
+            };
+
+            xhr.send();
+        }
+
+        function createInbox() {
+            const xhr = new XMLHttpRequest();
+            var inboxUsername = document.getElementById('inboxUsername').value;
+            var inboxDomain = document.getElementById('inboxDomain').value;
+
+            xhr.open('GET', '/create_inbox?username=' + inboxUsername + '&domain=' + inboxDomain, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) { // success
+                    let responseData = null;
+                    responseData = JSON.parse(xhr.responseText);
+                    if(responseData['responseCode']==200){
+                        noticeAlert('Create Inbox Success');
+                        var newEmailId = inboxUsername + '@' + inboxDomain;
+                        emails.push(newEmailId);
+                        loadActiveInboxes();
+                        changeEmail(newEmailId);
+                        $('#createInbox').modal('hide');
+                    } else {
+                        errorAlert('Error while creating inbox: ' + responseData['message'])
+                    }
+                } else { // request failed
+                    console.error('Request failed. Status:', xhr.status);
+                    errorAlert('Server Unreachable...');
+                    return -1;
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request error');
+            };
+
+            xhr.send();
+
+            // Prevent form submission
+            return false;
+        }
+
+        function deleteEmail() {
+            const xhr = new XMLHttpRequest();
+            let senderEmail = document.getElementById('senderEmail').textContent;
+            let date = document.getElementById('emailDate').textContent + " " + document.getElementById('emailTime').textContent;
+            xhr.open('GET', '/delete_email?sender=' + senderEmail + '&date=' + date + "&email=" + currentEmail, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) { // success
+                    let responseData = null;
+                    responseData = JSON.parse(xhr.responseText);
+                    if(responseData['responseCode'] == 200){
+                        noticeAlert('Delete Email Success');
+                        fetchData();
+                        $('#emailView').modal('hide');
+                    } else {
+                        errorAlert('Delete Inbox Error:', responseData['message']);
+                    }
+                } else { // request failed
+                    console.error('Request failed. Status:', xhr.status);
+                    errorAlert('Server Unreachable...');
+                    return -1;
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request error');
+            };
+
+            xhr.send();
+        }
+        
+    </script>
+    
+
+
+</body>
+
+</html>
